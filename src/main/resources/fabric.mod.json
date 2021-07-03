@@ -17,7 +17,7 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": ["net.fabricmc.example.ExampleMod"]
+    "main": ["io.github.a5b84.example.ExampleMod"]
   },
   "mixins": ["modid.mixins.json"],
 
