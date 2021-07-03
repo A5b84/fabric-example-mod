@@ -1,14 +1,19 @@
 package io.github.a5b84.example;
 
-import net.fabricmc.api.ModInitializer;
+import io.github.a5b84.example.config.ExampleModConfig;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.fabricmc.api.ClientModInitializer;
 
-public class ExampleMod implements ModInitializer {
+public class ExampleMod implements ClientModInitializer {
+
+	public static final String ID = "modid";
+
+	public static ExampleModConfig config;
+
 	@Override
-	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-
-		System.out.println("Hello Fabric world!");
+	public void onInitializeClient() {
+		AutoConfig.register(ExampleModConfig.class, GsonConfigSerializer::new);
+		config = AutoConfig.getConfigHolder(ExampleModConfig.class).getConfig();
 	}
 }

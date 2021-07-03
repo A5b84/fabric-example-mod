@@ -15,19 +15,17 @@
   "license": "LGPL-3.0-or-later",
   "icon": "assets/modid/icon.png",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
-    "main": ["io.github.a5b84.example.ExampleMod"]
+    "client": ["io.github.a5b84.example.ExampleMod"],
+    "modmenu": ["io.github.a5b84.example.config.ModMenuIntegration"]
   },
   "mixins": ["modid.mixins.json"],
 
   "depends": {
-    "fabricloader": ">=0.11.3",
-    "fabric": "*",
-    "minecraft": "1.17.x",
-    "java": ">=16"
+    "cloth-config2": ">=4.9.0"
   },
   "suggests": {
-    "another-mod": "*"
+    "modmenu": "*"
   }
 }
