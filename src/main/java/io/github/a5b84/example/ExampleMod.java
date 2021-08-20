@@ -7,13 +7,14 @@ import net.fabricmc.api.ClientModInitializer;
 
 public class ExampleMod implements ClientModInitializer {
 
-	public static final String ID = "modid";
+    public static final String ID = "modid";
 
-	public static ExampleModConfig config;
+    public static ExampleModConfig config;
 
-	@Override
-	public void onInitializeClient() {
-		AutoConfig.register(ExampleModConfig.class, GsonConfigSerializer::new);
-		config = AutoConfig.getConfigHolder(ExampleModConfig.class).getConfig();
-	}
+    @Override
+    public void onInitializeClient() {
+        AutoConfig.register(ExampleModConfig.class, GsonConfigSerializer::new);
+        config = AutoConfig.getConfigHolder(ExampleModConfig.class).getConfig();
+    }
+
 }
