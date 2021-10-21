@@ -4,9 +4,7 @@
   "package": "io.github.a5b84.example.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [],
-  "client": [
-    "ExampleMixin"
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }
