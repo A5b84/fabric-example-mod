@@ -23,7 +23,7 @@
   "mixins": ["modid.mixins.json"],
 
   "depends": {
-    "fabricloader": ">=0.12.0",
+    "fabricloader": ">=0.13.3",
     "cloth-config2": ">=4.9.0"
   },
   "suggests": {
