@@ -3,7 +3,7 @@ param (
 )
 
 if (!($modId -match "^[a-z][a-z0-9-_]{1,63}$")) {
-    # https://github.com/FabricMC/fabric-loader/blob/8879128ed5a9b29f84c7a1272e0de75ab282a5bf/src/main/java/net/fabricmc/loader/impl/metadata/ModMetadataParser.java#L46
+    # https://github.com/FabricMC/fabric-loader/blob/5dadf857ff5f30f5a681a1033e806794423c91ef/src/main/java/net/fabricmc/loader/impl/metadata/MetadataVerifier.java#L36
     Write-Host "Illegal mod ID: $modId" -ForegroundColor Red
     exit 1
 }
