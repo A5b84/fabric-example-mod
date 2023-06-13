@@ -3,5 +3,7 @@
 
   "text.autoconfig.modid.category.default": "General Settings",
 
-  "text.autoconfig.modid.option.something": "Something"
+  "text.autoconfig.modid.option.thing1": "Thing 1",
+  "text.autoconfig.modid.option.thing2": "Thing 2",
+  "text.autoconfig.modid.option.thing3": "Thing 3"
 }
