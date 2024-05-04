@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"package": "io.github.a5b84.example.mixin.client",
-	"compatibilityLevel": "JAVA_17",
+	"compatibilityLevel": "JAVA_21",
 	"client": [
         "ExampleClientMixin"
 	],
