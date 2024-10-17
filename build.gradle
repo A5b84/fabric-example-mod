@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.6-SNAPSHOT'
+	id 'fabric-loom' version '1.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -17,7 +17,7 @@ repositories {
 
 // TODO: remove the entire loom block for single sourceset mods, or remove this comment
 loom {
-    splitEnvironmentSourceSets()
+	splitEnvironmentSourceSets()
 
 	mods {
 		"modid" {
