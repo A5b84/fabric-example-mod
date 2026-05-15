@@ -28,6 +28,8 @@ $ErrorActionPreference = "Stop"
 Import-Module (Join-Path $PSScriptRoot Util.psm1)
 Import-Module (Join-Path $PSScriptRoot GitHubUtil.psm1)
 
+$repoRoot = $PSScriptRoot
+
 if (-not $UpstreamCommit) {
     if (-not $UpstreamBranch) {
         $UpstreamBranch = Get-DefaultBranch $UpstreamRepo
@@ -39,7 +41,7 @@ if (-not $UpstreamCommit) {
 }
 
 $temporaryDirectory = New-TemporaryDirectory
-$mirrorWorktreePath = Join-Path $temporaryDirectory mirror
+$mirrorRepoPath = Join-Path $temporaryDirectory mirror
 
 try {
     Write-Step 'Downloading repo archive'
@@ -49,34 +51,26 @@ try {
     Expand-Archive $archiveZipPath -DestinationPath $extractedArchivePath
     $archiveContentRoot = Get-SingleChild $extractedArchivePath
 
-    Write-Step 'Creating worktree'
-    Invoke-CheckedCommand git worktree add $mirrorWorktreePath $MirrorBranch
-    $createdWorkTree = $true
+    Write-Step 'Updating mirror'
+    Invoke-CheckedCommand git clone $repoRoot $mirrorRepoPath --branch $MirrorBranch --single-branch
 
-    Remove-Item $mirrorWorktreePath -Recurse -Force -Exclude .git
-    Move-Item (Join-Path $archiveContentRoot *) -Destination $mirrorWorktreePath
+    Get-ChildItem $mirrorRepoPath -Force -Exclude .git `
+        | Remove-Item -Recurse -Force
+    Move-Item (Join-Path $archiveContentRoot *) -Destination $mirrorRepoPath
 
-    $changes = (Invoke-CheckedCommand git -C $mirrorWorktreePath status --porcelain).Count
+    $changes = (Invoke-CheckedCommand git -C $mirrorRepoPath status --porcelain).Count
     if ($changes -gt 0) {
         Write-Step "Committing $changes changes"
-        Invoke-CheckedCommand git -C $mirrorWorktreePath add $mirrorWorktreePath
-
+        Invoke-CheckedCommand git -C $mirrorRepoPath add .
         $message = "Snapshot $($UpstreamBranch ? "branch $UpstreamBranch" : "repo") at commit https://github.com/$UpstreamRepo/commit/$UpstreamCommit"
-        Invoke-CheckedCommand git -C $mirrorWorktreePath commit -m $message
+        Invoke-CheckedCommand git -C $mirrorRepoPath commit -m $message
+        Invoke-CheckedCommand git -C $mirrorRepoPath push
     } else {
         Write-Host 'Mirror is already up to date'
     }
 } catch {
     Write-Error $_ -ErrorAction Continue
 } finally {
-    if ($createdWorkTree) {
-        Write-Step 'Removing worktree'
-        git worktree remove $mirrorWorktreePath --force
-        if ($LASTEXITCODE -ne 0) {
-            Write-Error "Failed to remove worktree, exit code: $LASTEXITCODE" -ErrorAction Continue
-        }
-    }
-
     Write-Step 'Cleaning up temporary files'
     Remove-Item $temporaryDirectory -Recurse -Force
 }
