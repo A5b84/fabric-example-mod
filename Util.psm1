@@ -15,15 +15,28 @@ function New-TemporaryDirectory {
 Export-ModuleMember New-TemporaryDirectory
 
 
-function Invoke-CheckedCommand() {
+function Format-CommandArgument {
+    param([Parameter(Mandatory)][string]$Argument)
+    # Formatting for display, doesn't need to be perfect
+    if ($Argument.Contains(' ') -or $Argument.Contains("'")) {
+        "'$($Argument.Replace("'", "''"))'"
+    } else {
+        $Argument
+    }
+}
+
+function Invoke-CheckedCommand {
     param(
         [Parameter(Mandatory)][string]$Executable,
         [Parameter(ValueFromRemainingArguments)][string[]]$Arguments
     )
 
+    $displayCommand = (Format-CommandArgument $Executable) + " " + ($Arguments | ForEach-Object { Format-CommandArgument $_ })
+
+    Write-Host "Running $displayCommand" -ForegroundColor DarkGray
     & $Executable @Arguments
     if ($LASTEXITCODE -ne 0) {
-        throw "Failed to run command $Executable $Arguments, exit code: $LASTEXITCODE"
+        throw "Failed to run command $displayCommand, exit code: $LASTEXITCODE"
     }
 }
 
