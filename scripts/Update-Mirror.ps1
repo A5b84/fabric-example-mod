@@ -31,7 +31,7 @@ $ErrorActionPreference = "Stop"
 Import-Module (Join-Path $PSScriptRoot Util.psm1)
 Import-Module (Join-Path $PSScriptRoot GitHubUtil.psm1)
 
-$repoRoot = $PSScriptRoot
+$repoRoot = Resolve-Path (Join-Path $PSScriptRoot ..)
 
 if (-not $UpstreamCommit) {
     if (-not $UpstreamBranch) {
