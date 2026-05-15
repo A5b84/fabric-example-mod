@@ -1,4 +1,7 @@
 <#
+    .SYNOPSIS
+    Updates a mirror by performing a snapshot of the upstream repo at a certain commit.
+
     .PARAMETER UpstreamBranch
     The branch to snapshot.
     Defaults to the default branch of the upstream repository.
@@ -58,10 +61,13 @@ try {
         | Remove-Item -Recurse -Force
     Move-Item (Join-Path $archiveContentRoot *) -Destination $mirrorRepoPath
 
+    Invoke-CheckedCommand git -C $mirrorRepoPath config core.autocrlf false # Avoids warning when end of lines are converted
+    # Add files before checking for changes in case something somehow modifies the files when adding them (eg EOL conversion)
+    Invoke-CheckedCommand git -C $mirrorRepoPath add .
+
     $changes = (Invoke-CheckedCommand git -C $mirrorRepoPath status --porcelain).Count
     if ($changes -gt 0) {
         Write-Step "Committing $changes changes"
-        Invoke-CheckedCommand git -C $mirrorRepoPath add .
         $message = "Snapshot $($UpstreamBranch ? "branch $UpstreamBranch" : "repo") at commit https://github.com/$UpstreamRepo/commit/$UpstreamCommit"
         Invoke-CheckedCommand git -C $mirrorRepoPath commit -m $message
         Invoke-CheckedCommand git -C $mirrorRepoPath push
