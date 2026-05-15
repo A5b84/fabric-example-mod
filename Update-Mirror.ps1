@@ -42,14 +42,14 @@ $temporaryDirectory = New-TemporaryDirectory
 $mirrorWorktreePath = Join-Path $temporaryDirectory mirror
 
 try {
-    Write-Host 'Downloading repo archive'
+    Write-Step 'Downloading repo archive'
     $archiveZipPath = Join-Path $temporaryDirectory archive.zip
     Get-RepoArchive $UpstreamRepo $UpstreamCommit $archiveZipPath
     $extractedArchivePath = Join-Path $temporaryDirectory archive
     Expand-Archive $archiveZipPath -DestinationPath $extractedArchivePath
     $archiveContentRoot = Get-SingleChild $extractedArchivePath
 
-    Write-Host 'Creating worktree'
+    Write-Step 'Creating worktree'
     Invoke-CheckedCommand git worktree add $mirrorWorktreePath $MirrorBranch
     $createdWorkTree = $true
 
@@ -58,24 +58,25 @@ try {
 
     $changes = (Invoke-CheckedCommand git -C $mirrorWorktreePath status --porcelain).Count
     if ($changes -gt 0) {
-        Write-Host "Committing $changes changes"
+        Write-Step "Committing $changes changes"
         Invoke-CheckedCommand git -C $mirrorWorktreePath add $mirrorWorktreePath
 
         $message = "Snapshot $($UpstreamBranch ? "branch $UpstreamBranch" : "repo") at commit https://github.com/$UpstreamRepo/commit/$UpstreamCommit"
         Invoke-CheckedCommand git -C $mirrorWorktreePath commit -m $message
     } else {
-        Write-Output 'Mirror is already up to date'
+        Write-Host 'Mirror is already up to date'
     }
 } catch {
     Write-Error $_ -ErrorAction Continue
 } finally {
     if ($createdWorkTree) {
-        Write-Host 'Removing worktree'
+        Write-Step 'Removing worktree'
         git worktree remove $mirrorWorktreePath --force
         if ($LASTEXITCODE -ne 0) {
             Write-Error "Failed to remove worktree, exit code: $LASTEXITCODE" -ErrorAction Continue
         }
     }
 
+    Write-Step 'Cleaning up temporary files'
     Remove-Item $temporaryDirectory -Recurse -Force
 }

@@ -1,3 +1,11 @@
+function Write-Step {
+    param([Parameter(Mandatory)][string]$Step)
+    Write-Host "--- $Step ---" -ForegroundColor Yellow
+}
+
+Export-ModuleMember Write-Step
+
+
 function New-TemporaryDirectory {
     $path = Join-Path ([System.IO.Path]::GetTempPath()) "fabric-example-mod-linear-mirror-$PID-$(Get-Random)"
     New-Item -Path $path -Type Directory > $null
