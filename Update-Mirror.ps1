@@ -68,7 +68,7 @@ try {
     $changes = (Invoke-CheckedCommand git -C $mirrorRepoPath status --porcelain).Count
     if ($changes -gt 0) {
         Write-Step "Committing $changes changes"
-        $message = "Snapshot $($UpstreamBranch ? "branch $UpstreamBranch" : "repo") at commit https://github.com/$UpstreamRepo/commit/$UpstreamCommit"
+        $message = "Snapshot $($UpstreamBranch ? "branch $UpstreamBranch" : "repo") at commit https://github.com/$UpstreamRepo/commit/$UpstreamCommit`n`n[skip ci]"
         Invoke-CheckedCommand git -C $mirrorRepoPath commit -m $message
         Invoke-CheckedCommand git -C $mirrorRepoPath push
     } else {
