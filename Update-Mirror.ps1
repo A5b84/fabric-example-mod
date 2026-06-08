@@ -28,10 +28,10 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-Import-Module (Join-Path $PSScriptRoot Util.psm1)
-Import-Module (Join-Path $PSScriptRoot GitHubUtil.psm1)
+Import-Module (Join-Path $PSScriptRoot util Util.psm1)
+Import-Module (Join-Path $PSScriptRoot util GithubUtil.psm1)
 
-$repoRoot = $PSScriptRoot
+$repoRoot = Resolve-Path $PSScriptRoot
 
 if (-not $UpstreamCommit) {
     if (-not $UpstreamBranch) {
@@ -59,7 +59,7 @@ try {
 
     Get-ChildItem $mirrorRepoPath -Force -Exclude .git `
         | Remove-Item -Recurse -Force
-    Move-Item (Join-Path $archiveContentRoot *) -Destination $mirrorRepoPath
+    Move-Item (Join-Path $archiveContentRoot *) -Destination $mirrorRepoPath -Force
 
     Invoke-CheckedCommand git -C $mirrorRepoPath config core.autocrlf false # Avoids warning when end of lines are converted
     # Add files before checking for changes in case something somehow modifies the files when adding them (eg EOL conversion)

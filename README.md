@@ -1,6 +1,20 @@
-# fabric-example-mod-linear-mirror
+# A5b84/fabric-example-mod
 
-This repository is a mirror of [FabricMC/fabric-example-mod](https://github.com/FabricMC/fabric-example-mod) where history is maintained as a single linear branch instead of parallel branches for each game version.
+This repository contains the following branches:
 
-This branch contains the script that updates the mirror.
-The actual mirror is in the [mirror](https://github.com/A5b84/fabric-example-mod-linear-mirror/tree/mirror) branch.
+- `mirror`: A mirror of [FabricMC/fabric-example-mod] where history is maintained as a single linear branch instead of parallel branches for each game version.
+- `main`: The script that updates the mirror in this branch.
+- `custom`: A custom fork of [FabricMC/fabric-example-mod].
+
+## Updating the mirror
+
+Run:
+
+```ps1
+Update-Mirror.ps1
+git push origin mirror
+```
+
+Alternatively, run the `update-mirror` workflow using GitHub Actions from [here](https://github.com/A5b84/fabric-example-mod/actions/workflows/update-mirror.yml).
+
+[FabricMC/fabric-example-mod]: https://github.com/FabricMC/fabric-example-mod

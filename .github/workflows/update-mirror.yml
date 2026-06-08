@@ -1,0 +1,25 @@
+name: Update mirror
+on:
+  workflow_dispatch:
+
+jobs:
+  update-mirror:
+    name: Update mirror
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git fetch origin mirror:mirror
+      - name: Update mirror
+        shell: pwsh
+        run: .\Update-Mirror.ps1
+      - name: Push updated mirror
+        run: git push origin mirror
