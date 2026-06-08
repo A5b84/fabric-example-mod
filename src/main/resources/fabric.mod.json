@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "modid",
 	"version": "${version}",
-	"name": "Example mod",
+	"name": "Example Mod",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
 		"A5b84"
@@ -20,10 +20,10 @@
             "io.github.a5b84.example.ExampleMod"
 		],
 		"client": [
-			"io.github.a5b84.example.ExampleModClient"
+			"io.github.a5b84.example.client.ExampleModClient"
 		],
 		"modmenu": [
-			"io.github.a5b84.example.config.ModMenuIntegration"
+			"io.github.a5b84.example.client.config.ModMenuIntegration"
 		]
 	},
 	"mixins": [
@@ -34,7 +34,7 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.18.5",
+		"fabricloader": ">=0.19.3",
 		"minecraft": ">=26.1-",
 		"java": ">=25",
 		"fabric-api": "*",

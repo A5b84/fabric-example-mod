@@ -1,4 +1,4 @@
-package io.github.a5b84.example.mixin.client;
+package io.github.a5b84.example.client.mixin;
 
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;

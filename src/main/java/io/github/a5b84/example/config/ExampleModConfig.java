@@ -10,5 +10,4 @@ public class ExampleModConfig implements ConfigData {
     public String thing1 = "Value 1";
     public String thing2 = "Value 2";
     public String thing3 = "Value 3";
-
 }

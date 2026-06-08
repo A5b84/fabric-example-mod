@@ -1,4 +1,4 @@
-package io.github.a5b84.example;
+package io.github.a5b84.example.client;
 
 import net.fabricmc.api.ClientModInitializer;
 

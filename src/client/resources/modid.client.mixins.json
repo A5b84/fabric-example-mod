@@ -1,11 +1,14 @@
 {
 	"required": true,
-	"package": "io.github.a5b84.example.mixin.client",
+	"package": "io.github.a5b84.example.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
         "ExampleClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
 	}
 }
